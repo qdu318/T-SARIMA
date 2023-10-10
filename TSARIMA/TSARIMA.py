@@ -58,7 +58,7 @@ class TSARIMA(object):
     def _initilizer(self, T_hat, Js, Rs, Xs):
         
         # initilize Us
-        U = [ np.random.random([j,r]) for j,r in zip( list(Js), Rs )]
+        M = [ np.random.random([j,r]) for j,r in zip( list(Js), Rs )]
 
         # initilize es
 
@@ -71,7 +71,7 @@ class TSARIMA(object):
         gamma=[  random.random()   for i in range(self._P)]
         thet=[  random.random()   for i in range(self._Q)]
 
-        return U, es,alpha, beta, gamma, thet
+        return M, es,alpha, beta, gamma, thet
 
     
     def _initilize_U(self, T_hat, Xs, Rs):
@@ -389,7 +389,7 @@ class TSARIMA(object):
         begin_idx = self._p + self._q
         T_hat = len(Xs)
         unfold_cores = self._get_unfold_tensor(cores, n)
-        H = self._get_H(Us, n)  # U(-m).T
+        H = self._get_H(Us, n)  # M(-m).T
         for t in range(begin_idx, T_hat):
             unfold_Xs = self._get_unfold_tensor(Xs[t], n)
             a = np.sum([alpha[i] * self._get_unfold_tensor(cores[t - (i + 1)], n) for i in range(self._p)], axis=0)
@@ -406,7 +406,7 @@ class TSARIMA(object):
         begin_idx = s*self._P + s*self._Q
         T_hat = len(Xs)
         unfold_cores = self._get_unfold_tensor(cores, n)
-        H = self._get_H(Us, n)  # U(-m).T
+        H = self._get_H(Us, n)  # M(-m).T
         for t in range(begin_idx, T_hat):
             unfold_Xs = self._get_unfold_tensor(Xs[t], n)
             a = np.sum([alpha[i] * self._get_unfold_tensor(cores[t - (i + 1)], n) for i in range(self._p)], axis=0)
@@ -498,7 +498,7 @@ class TSARIMA(object):
 
         return Xs
 
-    def _get_H(self, Us, n): #U(-m).T
+    def _get_H(self, Us, n): #M(-m).T
         ab=Us[::-1]
         Hs = tl.tenalg.kronecker([u.T for u, i in zip(Us[::-1], reversed(range(len(Us)))) if i!= n ])
         return Hs
