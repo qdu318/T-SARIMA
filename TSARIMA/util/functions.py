@@ -31,11 +31,11 @@ def svd_init(tensor, modes, ranks):
 def init(dims, ranks):
     factors = []
     for index, rank in enumerate(ranks):
-        U_i = np.zeros((rank, dims[index]))
+        M_i = np.zeros((rank, dims[index]))
         mindim = min(dims[index], rank)
         for i in range(mindim):
-            U_i[i][i] = 1
-        factors.append(U_i)
+            M_i[i][i] = 1
+        factors.append(M_i)
     return factors
 
 def autocorr(Y, lag=10,s=1):  #lag为阶数
